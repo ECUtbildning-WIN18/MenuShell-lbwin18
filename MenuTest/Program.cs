@@ -1,15 +1,63 @@
-﻿using System;
+﻿using MenuTest.Domain;
+using MenuTest.Services;
+using MenuTest.View;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace MenuTest
 {
+    public enum Role { Administrator, Veterinary, Receptionist};
+
     class Program
     {
         static void Main(string[] args)
         {
+            var users = new Dictionary<string, User>
+            {
+               {
+                    "admin",
+                    new User(username: "admin",
+                           password: "secret",
+                           role: Role.Administrator)
+               }
+            };
+
+            var authenticationService = new AuthenticationService(users);
+
+            var loginView = new LoginView(authenticationService);
+            //var mainView = new MainView();
+            //var registerNewCustomerView = new RegisterNewCustomerView();
+            //var searchCustomerView = new SearchCustomerView();
+
+            var validUser = loginView.Display();
+
+            switch (validUser.UserRole)
+            {
+                case Role.Administrator:
+                    {
+                        Console.Clear();
+                        System.Console.WriteLine("admin view");
+                        Thread.Sleep(2000);
+                    }
+                    break;
+                case Role.Receptionist:
+                    {
+                        Console.Clear();
+                        System.Console.WriteLine("receptionist view");
+                        Thread.Sleep(2000);
+                    }
+                    break;
+                case Role.Veterinary:
+                    {
+                        Console.Clear();
+                        System.Console.WriteLine("veterinary view");
+                        Thread.Sleep(2000);
+                    }
+                    break;
+            }
+
+
         }
     }
 }
