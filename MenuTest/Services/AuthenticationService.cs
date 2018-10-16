@@ -26,10 +26,15 @@ namespace MenuTest.Services
             return (UserList.Any(x => x.Value.Username == username && x.Value.Password == password) ? true : false);               
         }
 
+        public bool UserNameExists(string username)
+        {
+            return (UserList.Any(x => x.Value.Username == username) ? true : false);
+        }
+
         //public Dictionary<Role, User> GetUserList()
         //{
         //    var userList = users;   // could be from a XML-file, database or else
         //}
-       
+
     }
 }

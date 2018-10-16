@@ -26,9 +26,6 @@ namespace MenuTest
             var authenticationService = new AuthenticationService(users);
 
             var loginView = new LoginView(authenticationService);
-            //var mainView = new MainView();
-            //var registerNewCustomerView = new RegisterNewCustomerView();
-            //var searchCustomerView = new SearchCustomerView();
 
             var validUser = loginView.Display();
 
@@ -37,7 +34,8 @@ namespace MenuTest
                 case Role.Administrator:
                     {
                         Console.Clear();
-                        System.Console.WriteLine("admin view");
+                        AdminView adminview = new AdminView();
+                        adminview.Display();
                         Thread.Sleep(2000);
                     }
                     break;
