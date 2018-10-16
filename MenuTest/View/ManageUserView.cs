@@ -1,11 +1,6 @@
-﻿using MenuTest.Domain;
-using MenuTest.Services;
+﻿using MenuTest.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MenuTest.View
 {
@@ -39,7 +34,13 @@ namespace MenuTest.View
                     DeleteUserView deleteUserView = new DeleteUserView();
                     deleteUserView.Display();
                     break;
-
+                case ConsoleKey.Q:
+                    {
+                        Console.SetCursorPosition(0, 4);
+                        var adminView = new AdminView();
+                        adminView.Display();
+                    }
+                    break;
                 default:
                     Console.WriteLine("Not a valid option.");
                     Thread.Sleep(2000);

@@ -12,13 +12,5 @@ namespace MenuTest.View
             Title = title;
             Console.Title = title;
         }
-
-        
-
-        //public virtual User Display()
-        //{
-        //    Console.Clear();
-        //    return null;
-        //}
     }
 }

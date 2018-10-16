@@ -2,7 +2,6 @@
 using MenuTest.Services;
 using MenuTest.View;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace MenuTest
@@ -13,17 +12,15 @@ namespace MenuTest
     {
         static void Main(string[] args)
         {
-            var users = new Dictionary<string, User>
-            {
-               {
-                    "admin",
-                    new User(username: "admin",
-                           password: "secret",
-                           role: Role.Administrator)
-               }
-            };
 
+            var userListHandler = new UserListHandler();
+            var users = userListHandler.GetUserList();  //From XML-file
             var authenticationService = new AuthenticationService(users);
+            var Admin = new User("admin", "secret", Role.Administrator);
+            if(!authenticationService.UserExists(Admin.Username, Admin.Password))
+            {
+                userListHandler.AddUserToList(users, Admin);
+            }
 
             var loginView = new LoginView(authenticationService);
 
@@ -54,8 +51,6 @@ namespace MenuTest
                     }
                     break;
             }
-
-
         }
     }
 }

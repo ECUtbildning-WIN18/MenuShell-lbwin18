@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace MenuTest.Services
@@ -74,6 +71,5 @@ namespace MenuTest.Services
             xDocument.Root.Elements().Where(x => x.Attribute("username").Value == username).Remove();
             xDocument.Save(xmlFileName);
         }
-
     }
 }

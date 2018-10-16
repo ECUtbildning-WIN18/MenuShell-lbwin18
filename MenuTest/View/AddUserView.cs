@@ -2,10 +2,7 @@
 using MenuTest.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MenuTest.View
 {
@@ -23,9 +20,6 @@ namespace MenuTest.View
             var users = new Dictionary<string, User>();
             users = userListHandler.GetUserList();
             var authenticationService = new AuthenticationService(users);
-
-            //userListHandler.PrintUserList(users);
-            //Console.ReadKey();
 
             bool isRunning = false;
 
