@@ -21,6 +21,7 @@ namespace MenuTest.View
 
             do
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Username: ");
                 Console.WriteLine("Password: ");
                 Console.SetCursorPosition(10, 0);
@@ -43,6 +44,7 @@ namespace MenuTest.View
                             else
                             {
                                 Console.SetCursorPosition(0, 4);
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Login failed. Please try again!.");
                                 Thread.Sleep(2000);
                                 Console.Clear();
@@ -61,7 +63,7 @@ namespace MenuTest.View
                     case ConsoleKey.Q:
                         {
                             Console.SetCursorPosition(0, 4);
-                            Console.WriteLine("Exit program");
+                            Console.WriteLine("Exits program");
                             Thread.Sleep(2000);
                             Environment.Exit(1);
                         }
@@ -77,6 +79,7 @@ namespace MenuTest.View
                 }
             } while (!isRunning);
             Console.SetCursorPosition(0, 3);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nLogin successful");
             Thread.Sleep(2000);
             return myUser;

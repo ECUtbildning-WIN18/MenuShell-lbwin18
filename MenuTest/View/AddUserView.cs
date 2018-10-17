@@ -20,11 +20,14 @@ namespace MenuTest.View
             var users = new Dictionary<string, User>();
             users = userListHandler.GetUserList();
             var authenticationService = new AuthenticationService(users);
+            var manageUserView = new ManageUserView();
+
 
             bool isRunning = false;
 
             do
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Clear();
 
                 Console.WriteLine("# Add user\n");
@@ -45,19 +48,32 @@ namespace MenuTest.View
                 switch (input.Key)
                 {
                     case ConsoleKey.Y:
+                        Console.SetCursorPosition(0, 7);
                         if (authenticationService.UserNameExists(username))
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Username already exists. Try another username.");
+                            Thread.Sleep(2000);
+                        }
+                        else if (!authenticationService.RoleIsLegit(userRole))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("You entered a non legit role.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("Pleae enter one of the following roles:");
+                            Console.WriteLine($"{Role.Administrator}, {Role.Veterinary} or {Role.Receptionist}");
+                            Console.ReadKey();
                         }
                         else
                         {
+                            Console.ForegroundColor = ConsoleColor.Green;
                             var newUser = new User(username, password, userRole);
                             userListHandler.AddUserToList(users, newUser);
                             userListHandler.AddUserToXMLFile("Users.xml", newUser);
                             Console.Clear();
+                            Console.WriteLine("Adding user was succesful\n");
                             userListHandler.PrintUserList(users);
-                            Thread.Sleep(2000);
-                            ManageUserView manageUserView = new ManageUserView();
+                            Console.ReadKey();
                             manageUserView.Display();
                         }
                         break;
@@ -65,13 +81,11 @@ namespace MenuTest.View
                         Console.SetCursorPosition(0, 7);
                         Console.WriteLine("Try again!");
                         Thread.Sleep(2000);
-                        Console.Clear();
                         break;
                     default:
                         Console.SetCursorPosition(0, 7);
                         Console.WriteLine("Invalid option!");
                         Thread.Sleep(2000);
-                        Console.Clear();
                         break;
                 }
 

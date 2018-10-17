@@ -38,8 +38,7 @@ namespace MenuTest.Services
             foreach(var user in userList)
             {
                 x++;
-                Console.WriteLine($"{x}. {user.Value.Username}");
-                
+                Console.WriteLine($"{x}. {user.Value.Username,-15} {user.Value.UserRole,-15}");            
             } return x;
         }
 

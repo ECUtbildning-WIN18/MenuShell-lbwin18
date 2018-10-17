@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace MenuTest
 {
-    public enum Role { Administrator, Veterinary, Receptionist};
+    public enum Role { None, Administrator, Veterinary, Receptionist};
 
     class Program
     {

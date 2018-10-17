@@ -30,5 +30,10 @@ namespace MenuTest.Services
         {
             return (UserList.Any(x => x.Value.Username == username) ? true : false);
         }
+
+        public bool RoleIsLegit(Role role)
+        {
+            return (role == Role.None) ? false : true;
+        }
     }
 }
