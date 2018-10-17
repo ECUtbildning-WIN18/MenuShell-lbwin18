@@ -13,11 +13,17 @@ namespace MenuTest.View
 
         public void Display()
         {
+            Console.ForegroundColor = ConsoleColor.White;
             var userListHandler = new UserListHandler();
+            var addUserView = new AddUserView();
+            var deleteUserView = new DeleteUserView();
+            var adminView = new AdminView();
 
             Console.Clear();
             Console.WriteLine("1. Add user");
             Console.WriteLine("2. Delete user");
+            Console.WriteLine("3. Back to Main menu");
+
             Console.Write("\n>");
 
             var input = Console.ReadKey();
@@ -25,19 +31,16 @@ namespace MenuTest.View
             switch (input.Key)
             {
                 case ConsoleKey.D1:
-                    AddUserView addUserView = new AddUserView();
                     addUserView.Display();
                     break;
 
                 case ConsoleKey.D2:
                 case ConsoleKey.NumPad2:
-                    DeleteUserView deleteUserView = new DeleteUserView();
                     deleteUserView.Display();
                     break;
-                case ConsoleKey.Q:
+                case ConsoleKey.D3:
                     {
                         Console.SetCursorPosition(0, 4);
-                        var adminView = new AdminView();
                         adminView.Display();
                     }
                     break;
