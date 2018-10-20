@@ -19,6 +19,7 @@ namespace MenuTest.View
             var users = new Dictionary<string, User>();
             users = userListHandler.GetUserList();
             var authenticationService = new AuthenticationService(users);
+            var adminView = new AdminView();
 
             Console.Clear();
 
@@ -46,26 +47,26 @@ namespace MenuTest.View
                 x++;
             }
             Console.WriteLine($"You are about to delete {userToDelete}.");
-            Console.WriteLine("Is this correct? (Y)es (N)o");
+            Console.WriteLine("Is this correct? (Y)es (N)o (A)bort");
 
             var deleteChoice = Console.ReadKey();
 
             switch (deleteChoice.Key)
             {
                 case ConsoleKey.Y:
-                    userListHandler.RemoveUserFromList(users, userToDelete);
+                    userListHandler.DeleteUserFromList(users, userToDelete);
                     userListHandler.DeleteUserFromXMLFile("Users.xml", userToDelete);
-
                     Console.Clear();
                     userListHandler.PrintUserList(users);
-
                     Thread.Sleep(3000);
-                    AdminView adminView = new AdminView();
                     adminView.Display();
                     break;
                 case ConsoleKey.N:
                     ManageUserView manageUserView = new ManageUserView();
                     manageUserView.Display();
+                    break;
+                case ConsoleKey.A:
+                    adminView.Display();
                     break;
             }
         }

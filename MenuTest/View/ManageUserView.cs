@@ -15,9 +15,6 @@ namespace MenuTest.View
         {
             Console.ForegroundColor = ConsoleColor.White;
             var userListHandler = new UserListHandler();
-            var addUserView = new AddUserView();
-            var deleteUserView = new DeleteUserView();
-            var adminView = new AdminView();
 
             Console.Clear();
             Console.WriteLine("1. Add user");
@@ -26,28 +23,26 @@ namespace MenuTest.View
 
             Console.Write("\n>");
 
-            var input = Console.ReadKey();
+            var input = Console.ReadKey(true);
 
             switch (input.Key)
             {
                 case ConsoleKey.D1:
+                    var addUserView = new AddUserView();
                     addUserView.Display();
                     break;
-
                 case ConsoleKey.D2:
                 case ConsoleKey.NumPad2:
+                    var deleteUserView = new DeleteUserView();
                     deleteUserView.Display();
                     break;
                 case ConsoleKey.D3:
-                    {
-                        Console.SetCursorPosition(0, 4);
-                        adminView.Display();
-                    }
+                    var adminView = new AdminView();
+                    adminView.Display();    
                     break;
                 default:
                     Console.WriteLine("Not a valid option.");
                     Thread.Sleep(2000);
-                    Console.Clear();
                     Display();
                     break;
             }

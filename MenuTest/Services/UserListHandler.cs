@@ -42,12 +42,23 @@ namespace MenuTest.Services
             } return x;
         }
 
+        public int PrintUserListWithUserNames(Dictionary<string, User> userList)
+        {
+            var x = 0;
+            foreach (var user in userList)
+            {
+                x++;
+                Console.WriteLine($"- {user.Value.Username,-15}");
+            }
+            return x;
+        }
+
         public void AddUserToList(Dictionary<string, User> userList, User user)
         {
             userList.Add(user.Username, user);
         }
         
-        public void RemoveUserFromList(Dictionary<string, User> userList, string username)
+        public void DeleteUserFromList(Dictionary<string, User> userList, string username)
         {
             userList.Remove(username);
         }
@@ -70,5 +81,15 @@ namespace MenuTest.Services
             xDocument.Root.Elements().Where(x => x.Attribute("username").Value == username).Remove();
             xDocument.Save(xmlFileName);
         }
+
+        public Dictionary<string, User> GetUsersStartingWithString(string searchString)
+        {
+            Dictionary<string, User> searchList = GetUserList();
+            var resultList = searchList.Where(x => x.Key.StartsWith(searchString)).ToDictionary(x => x.Key, x => x.Value);
+
+            return resultList;
+        }
     }
 }
+    
+

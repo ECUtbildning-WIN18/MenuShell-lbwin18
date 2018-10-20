@@ -53,11 +53,14 @@
     <Compile Include="View\AdminView.cs" />
     <Compile Include="View\BaseView.cs" />
     <Compile Include="View\DeleteUserView.cs" />
+    <Compile Include="View\DeleteUserModeView.cs" />
     <Compile Include="View\LoginView.cs" />
     <Compile Include="View\MainView.cs" />
     <Compile Include="View\ManageUserView.cs" />
     <Compile Include="View\RegisterCustomerView.cs" />
     <Compile Include="View\SearchCustomerView.cs" />
+    <Compile Include="View\ManageUserView2.cs" />
+    <Compile Include="View\SearchUsersView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
