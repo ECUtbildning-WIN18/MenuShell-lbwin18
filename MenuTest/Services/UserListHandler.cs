@@ -91,6 +91,7 @@ namespace MenuTest.Services
             return users;
         }
 
+
         public Dictionary<string, User> GetUsersFromDBStartingWithString(string searchString)
         {
             var resultList = new Dictionary<string, User>();
@@ -143,6 +144,7 @@ namespace MenuTest.Services
                 }
             }
         }
+
 
         public void DeleteUserFromDataBase(string username)
         {
@@ -214,5 +216,3 @@ namespace MenuTest.Services
         // ********** End Dictionary related methods **********
     }
 }
-    
-
