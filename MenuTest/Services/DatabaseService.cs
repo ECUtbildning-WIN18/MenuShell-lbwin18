@@ -10,7 +10,7 @@ namespace MenuTest.Services
 
     class DatabaseService
     {
-        private static void OpenSqlConnection()
+        public static void OpenSqlConnection()
         {
             string connectionString = GetConnectionString();
 
@@ -26,7 +26,7 @@ namespace MenuTest.Services
             }
         }
 
-        static private string GetConnectionString()
+        public static string GetConnectionString()
         {
             // return = "Data Source=(local);Initial Catalog=MenuShell;Integrated Security=true";
             return "Data Source=.\\MSSQLSERVER01;Initial Catalog=MenuShell;Integrated Security=true";

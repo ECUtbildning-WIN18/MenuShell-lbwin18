@@ -64,7 +64,8 @@ namespace MenuTest.View
                         {
                             var newUser = new User(username, password, userRole);
                             userListHandler.AddUserToList(users, newUser);
-                            userListHandler.AddUserToXMLFile("Users.xml", newUser);
+                            //userListHandler.AddUserToXMLFile("Users.xml", newUser);
+                            userListHandler.AddUserToDatabase(newUser);
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"\nAdding user {username} was succesful\n");
                             Thread.Sleep(2000);

@@ -9,8 +9,7 @@ namespace MenuTest.View
     class DeleteUserView : BaseView
     {
         public DeleteUserView() : base("Admisistrator - Delete user")
-        {
-                
+        {              
         }
 
         public void Display()

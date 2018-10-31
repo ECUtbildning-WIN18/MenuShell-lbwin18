@@ -12,7 +12,6 @@ namespace MenuTest.View
     {
         public SearchUsersView() : base("Administrator - Search user")
         {
-
         }
 
         public void Display()
@@ -20,12 +19,12 @@ namespace MenuTest.View
             Console.Clear();
             var userListHandler = new UserListHandler();
             var userList = userListHandler.GetUserList();
-           // userListHandler.PrintUserListWithUserNames(userList);
+            //userListHandler.PrintUserListWithUserNames(userList);
             Console.WriteLine("Search by user name:\n");
             Console.Write("\n> ");
             var searchString = Console.ReadLine();
 
-            var searchResult = userListHandler.GetUsersStartingWithString(searchString);
+            var searchResult = userListHandler.GetUsersFromDBStartingWithString(searchString);
             if (searchResult.Any())
             {
                 Console.Clear();

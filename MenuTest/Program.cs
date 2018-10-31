@@ -14,9 +14,9 @@ namespace MenuTest
         {
 
             var userListHandler = new UserListHandler();
-            var users = userListHandler.GetUserList();  //From XML-file
+            var users = userListHandler.GetUserListFromDatabase();  //From Database
             var authenticationService = new AuthenticationService(users);
-            var Admin = new User("admin", "secret", Role.Administrator);
+            var Admin = new User("admin", "admin", Role.Administrator);
             if(!authenticationService.UserExists(Admin.Username, Admin.Password))
             {
                 userListHandler.AddUserToList(users, Admin);

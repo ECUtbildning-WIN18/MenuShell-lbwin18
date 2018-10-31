@@ -35,7 +35,8 @@ namespace MenuTest.View
                     if (SearchResult.Keys.Any(key => key.Equals(username)))
                     {
                         userListHandler.DeleteUserFromList(UserList, username);
-                        userListHandler.DeleteUserFromXMLFile("Users.xml", username);
+                        //userListHandler.DeleteUserFromXMLFile("Users.xml", username);
+                        userListHandler.DeleteUserFromDataBase(username);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"User { username} successfully deleted.");
                         Console.ForegroundColor = ConsoleColor.White;

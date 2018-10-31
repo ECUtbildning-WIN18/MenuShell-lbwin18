@@ -11,9 +11,7 @@ namespace MenuTest.Services
     {
         public UserListHandler()
         {
-
         }
-
 
         // ********** XML related methods **********
 
@@ -41,9 +39,9 @@ namespace MenuTest.Services
             var xDocument = XDocument.Load("Users.xml");
             xDocument.Element("Users").Add(
                 new XElement("User",
-                    new XAttribute("username", user.Username),
-                    new XAttribute("password", user.Password),
-                    new XAttribute("role", user.UserRole)
+                new XAttribute("username", user.Username),
+                new XAttribute("password", user.Password),
+                new XAttribute("role", user.UserRole)
                 ));
             xDocument.Save(xmlFileName);
         }
@@ -55,7 +53,6 @@ namespace MenuTest.Services
             xDocument.Root.Elements().Where(x => x.Attribute("username").Value == username).Remove();
             xDocument.Save(xmlFileName);
         }
-
         // ********** End XML related methods **********
 
 
@@ -67,15 +64,13 @@ namespace MenuTest.Services
             var users = new Dictionary<string, User>();
 
             string sqlQuery = "SELECT * FROM [User] ORDER BY Username ASC";
-            string connectionString = "Data Source=.\\MSSQLSERVER01;Initial Catalog=MenuShell;Integrated Security=true";
+            string connectionString = DatabaseService.GetConnectionString(); //"Data Source=.\\MSSQLSERVER01;Initial Catalog=MenuShell;Integrated Security=true";
             using (var connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-
                     var sqlCommand = new SqlCommand(sqlQuery, connection);
-
                     var dataReader = sqlCommand.ExecuteReader();
 
                     while (dataReader.Read())
@@ -83,11 +78,9 @@ namespace MenuTest.Services
                         var username = dataReader["Username"].ToString();
                         var password = dataReader["Password"].ToString();
                         var role = dataReader["Role"].ToString();
-
                         Enum.TryParse(role, true, out Role userRole);
                         users.Add(username, new User(username, password, userRole));
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -98,27 +91,78 @@ namespace MenuTest.Services
             return users;
         }
 
+        public Dictionary<string, User> GetUsersFromDBStartingWithString(string searchString)
+        {
+            var resultList = new Dictionary<string, User>();
+            string sqlQuery = $"SELECT * FROM [User] WHERE Username LIKE '{searchString}%' ORDER BY Username ASC";
+            string connectionString = DatabaseService.GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    var sqlCommand = new SqlCommand(sqlQuery, connection);
+                    var dataReader = sqlCommand.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        var username = dataReader["Username"].ToString();
+                        var password = dataReader["Password"].ToString();
+                        var role = dataReader["Role"].ToString();
+                        Enum.TryParse(role, true, out Role userRole);
+                        resultList.Add(username, new User(username, password, userRole));
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+            return resultList;
+        }
+
+
         public void AddUserToDatabase(User user)
         {
-            //var xDocument = XDocument.Load("Users.xml");
-            //xDocument.Element("Users").Add(
-            //    new XElement("User",
-            //        new XAttribute("username", user.Username),
-            //        new XAttribute("password", user.Password),
-            //        new XAttribute("role", user.UserRole)
-            //    ));
-            //xDocument.Save(xmlFileName);
-
+            string sqlQuery = $"INSERT INTO [User] (Username, Password, Role) " +
+                $"VALUES('{user.Username}', '{user.Password}', '{user.UserRole}')";
+            string connectionString = DatabaseService.GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    var sqlCommand = new SqlCommand(sqlQuery, connection);
+                    sqlCommand.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
         }
 
         public void DeleteUserFromDataBase(string username)
         {
-            //var xDocument = XDocument.Load("Users.xml");
-            //xDocument.Root.Elements().Where(x => x.Attribute("username").Value == username).Remove();
-            //xDocument.Save(xmlFileName);
-
+            string sqlQuery = String.Format($"DELETE FROM [User] WHERE Username = '{username}'");
+            string connectionString = DatabaseService.GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    var sqlCommand = new SqlCommand(sqlQuery, connection);
+                    sqlCommand.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
         }
-
         // ********** End Database related methods **********
 
 
@@ -167,7 +211,6 @@ namespace MenuTest.Services
 
             return resultList;
         }
-
         // ********** End Dictionary related methods **********
     }
 }
