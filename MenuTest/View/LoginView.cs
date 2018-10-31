@@ -53,7 +53,6 @@ namespace MenuTest.View
                         break;
                     case ConsoleKey.N:
                         {                            
-                            // retry login
                             Console.SetCursorPosition(0, 4);
                             Console.WriteLine("Try again!");
                             Thread.Sleep(2000);
