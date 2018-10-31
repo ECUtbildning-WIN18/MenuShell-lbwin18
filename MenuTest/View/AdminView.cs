@@ -30,7 +30,7 @@ namespace MenuTest.View
                     break;
                 case ConsoleKey.D2:
                     Console.WriteLine();
-                    userListHandler.PrintUserList(userListHandler.GetUserList());
+                    userListHandler.PrintUserList(userListHandler.GetUserListFromDatabase());
                     Console.ReadKey();
                     Display();
                     break;
