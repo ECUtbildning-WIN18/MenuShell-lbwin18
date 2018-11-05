@@ -33,7 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,23 +51,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\User.cs" />
+    <Compile Include="MenuShellDbContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\DatabaseService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\UserListHandler.cs" />
     <Compile Include="View\AddUserView.cs" />
     <Compile Include="View\AdminView.cs" />
     <Compile Include="View\BaseView.cs" />
-    <Compile Include="View\DeleteUserView.cs" />
+    <Compile Include="View\DeleteUserModeView.cs" />
     <Compile Include="View\LoginView.cs" />
     <Compile Include="View\MainView.cs" />
-    <Compile Include="View\ManageUserView.cs" />
     <Compile Include="View\RegisterCustomerView.cs" />
     <Compile Include="View\SearchCustomerView.cs" />
+    <Compile Include="View\ManageUserView2.cs" />
+    <Compile Include="View\SearchUsersView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\Users.xml" />

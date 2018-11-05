@@ -7,9 +7,9 @@ namespace MenuTest.Services
     class AuthenticationService : IAuthenticationService
     {
 
-        public Dictionary<string, User> UserList { get; }
+        public IList<User> UserList { get; }
 
-        public AuthenticationService(Dictionary<string, User> users)
+        public AuthenticationService(IList<User> users)
         {
             UserList = users;
         }
@@ -17,18 +17,17 @@ namespace MenuTest.Services
 
         public  User Authenticate(string username, string password)
         {    
-            return UserList.Values.FirstOrDefault(x => x.Username == username && x.Password == password);
+            return UserList.FirstOrDefault(x => x.Username == username && x.Password == password);
         }
-
 
         public bool UserExists(string username, string password)
         {
-            return (UserList.Any(x => x.Value.Username == username && x.Value.Password == password) ? true : false);               
+            return (UserList.Any(x => x.Username == username && x.Password == password) ? true : false);               
         }
 
         public bool UserNameExists(string username)
         {
-            return (UserList.Any(x => x.Value.Username == username) ? true : false);
+            return (UserList.Any(x => x.Username == username) ? true : false);
         }
 
         public bool RoleIsLegit(Role role)

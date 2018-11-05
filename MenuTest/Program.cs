@@ -12,21 +12,22 @@ namespace MenuTest
     {
         static void Main(string[] args)
         {
-
-            var userListHandler = new UserListHandler();
-            var users = userListHandler.GetUserList();  //From XML-file
+            var users = UserListHandler.GetUsersFromDbUsingEF();
             var authenticationService = new AuthenticationService(users);
-            var Admin = new User("admin", "secret", Role.Administrator);
-            if(!authenticationService.UserExists(Admin.Username, Admin.Password))
+
+            var admin = new User("admin", "secret", Role.Administrator);
+
+            if(!authenticationService.UserExists(admin.Username, admin.Password))
             {
-                userListHandler.AddUserToList(users, Admin);
+                UserListHandler.AddUserToList(users, admin);
+                UserListHandler.SaveUserToDbUsingEF(admin);
             }
 
             var loginView = new LoginView(authenticationService);
 
             var validUser = loginView.Display();
 
-            switch (validUser.UserRole)
+            switch (validUser.Role)
             {
                 case Role.Administrator:
                     {
