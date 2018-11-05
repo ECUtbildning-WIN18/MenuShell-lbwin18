@@ -1,7 +1,6 @@
 ﻿using MenuTest.Domain;
 using MenuTest.Services;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace MenuTest.View
@@ -11,14 +10,11 @@ namespace MenuTest.View
 
         public AddUserView() : base("Administrator - Add user")
         {
-
         }
 
         public void Display()
         {
-            var userListHandler = new UserListHandler();
-            var users = new Dictionary<string, User>();
-            users = userListHandler.GetUserList();
+            var users = UserListHandler.GetUsersFromDbUsingEF();
             var authenticationService = new AuthenticationService(users);
 
             bool isRunning = false;
@@ -63,8 +59,8 @@ namespace MenuTest.View
                         else
                         {
                             var newUser = new User(username, password, userRole);
-                            userListHandler.AddUserToList(users, newUser);
-                            userListHandler.AddUserToDatabase(newUser);
+                            UserListHandler.AddUserToList(users, newUser);
+                            UserListHandler.SaveUserToDbUsingEF(newUser);
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"\nAdding user {username} was succesful\n");
                             Thread.Sleep(2000);
@@ -85,7 +81,7 @@ namespace MenuTest.View
                         Thread.Sleep(2000);
                         break;
                 }
-            } while(!isRunning);        
+            } while (!isRunning);
         }
     }
 }

@@ -9,10 +9,10 @@ namespace MenuTest.View
 {
     class DeleteUserModeView : BaseView
     {
-        public Dictionary<string, User> UserList { get; }
-        public Dictionary<string, User> SearchResult { get; }
+        public IList<User> UserList { get; }
+        public IList<User> SearchResult { get; }
 
-        public DeleteUserModeView(Dictionary<string, User> userList, Dictionary<string, User> searchResult) : base("Administrator - Delete user mode")
+        public DeleteUserModeView(IList<User> userList, IList<User> searchResult) : base("Administrator - Delete user mode")
         {
             UserList = userList;
             SearchResult = searchResult;
@@ -22,8 +22,7 @@ namespace MenuTest.View
         {
             Console.Clear();
             Console.WriteLine("  Search result\n");
-            var userListHandler = new UserListHandler();
-            userListHandler.PrintUserListWithUserNames(SearchResult);
+            UserListHandler.PrintUserList(SearchResult);
             Console.Write("\nDelete> ");
             var username = Console.ReadLine();
             Console.WriteLine($"\nDelete user {username}?  (Y)es (N)o (A)bort");
@@ -32,10 +31,10 @@ namespace MenuTest.View
             switch (input.Key)
             {
                 case ConsoleKey.Y:
-                    if (SearchResult.Keys.Any(key => key.Equals(username)))
+                    if (SearchResult.Any(x => x.Username == username))
                     {
-                        userListHandler.DeleteUserFromList(UserList, username);
-                        userListHandler.DeleteUserFromDataBase(username);
+                        UserListHandler.RemoveUserFromList(UserList, username);
+                        UserListHandler.RemoveUserFromDbUsingEF(username);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"User { username} successfully deleted.");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -56,7 +55,7 @@ namespace MenuTest.View
                 case ConsoleKey.A:
                     var manageUsersView = new ManageUserView2();
                     manageUsersView.Display();
-                    break;                
+                    break;
             }
         }
     }

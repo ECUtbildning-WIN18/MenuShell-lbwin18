@@ -1,6 +1,5 @@
 ﻿using MenuTest.Services;
 using System;
-using System.Threading;
 
 namespace MenuTest.View
 {
@@ -20,8 +19,7 @@ namespace MenuTest.View
             Console.Write("\n>");
 
             var input = Console.ReadKey(true);
-            var userListHandler = new UserListHandler();
-
+            
             switch (input.Key)
             {
                 case ConsoleKey.D1:
@@ -30,8 +28,8 @@ namespace MenuTest.View
                     break;
                 case ConsoleKey.D2:
                     Console.WriteLine();
-                    userListHandler.PrintUserList(userListHandler.GetUserListFromDatabase());
-                    Console.ReadKey();
+                    UserListHandler.PrintUserList(UserListHandler.GetUsersFromDbUsingEF());                   
+                        Console.ReadKey();
                     Display();
                     break;
                 case ConsoleKey.D3:

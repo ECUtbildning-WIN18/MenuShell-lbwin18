@@ -1,10 +1,7 @@
 ﻿using MenuTest.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MenuTest.View
 {
@@ -17,19 +14,18 @@ namespace MenuTest.View
         public void Display()
         {
             Console.Clear();
-            var userListHandler = new UserListHandler();
-            var userList = userListHandler.GetUserList();
-            //userListHandler.PrintUserListWithUserNames(userList);
+            //var userListHandler = new UserListHandler();
+            var userList = UserListHandler.GetUsersFromDbUsingEF();
             Console.WriteLine("Search by user name:\n");
             Console.Write("\n> ");
             var searchString = Console.ReadLine();
 
-            var searchResult = userListHandler.GetUsersFromDBStartingWithString(searchString);
+            var searchResult = UserListHandler.GetUsersStartingWithString(searchString);
             if (searchResult.Any())
             {
                 Console.Clear();
                 Console.WriteLine("  Search result\n");
-                userListHandler.PrintUserListWithUserNames(searchResult);
+                UserListHandler.PrintUserList(searchResult);
                 Console.WriteLine("\n(D)elete  (A)bort");
                 var input = Console.ReadKey(true);
                 switch (input.Key)

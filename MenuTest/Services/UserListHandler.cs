@@ -1,218 +1,69 @@
 ﻿using MenuTest.Domain;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace MenuTest.Services
 {
     class UserListHandler
     {
-        public UserListHandler()
+
+        public static IList<User> GetUsersFromDbUsingEF()
         {
-        }
-
-        // ********** XML related methods **********
-
-        public Dictionary<string, User> GetUserList()
-        {
-            var users = new Dictionary<string, User>();
-            var xDocument = XDocument.Load("Users.xml");
-            var root = xDocument.Root;
-
-            foreach (var element in xDocument.Root.Elements())
+            using (var context = new MenuShellDbContext())
             {
-                var username = element.Attribute("username").Value;
-                var password = element.Attribute("password").Value;
-                var role = element.Attribute("role").Value;
-
-                Enum.TryParse(role, true, out Role userRole);
-                users.Add(username, new User(username, password, userRole));
-            }
-            return users;
-        }
-
-
-        public void AddUserToXMLFile(string xmlFileName, User user)
-        {
-            var xDocument = XDocument.Load("Users.xml");
-            xDocument.Element("Users").Add(
-                new XElement("User",
-                new XAttribute("username", user.Username),
-                new XAttribute("password", user.Password),
-                new XAttribute("role", user.UserRole)
-                ));
-            xDocument.Save(xmlFileName);
-        }
-
-
-        public void DeleteUserFromXMLFile(string xmlFileName, string username)
-        {
-            var xDocument = XDocument.Load("Users.xml");
-            xDocument.Root.Elements().Where(x => x.Attribute("username").Value == username).Remove();
-            xDocument.Save(xmlFileName);
-        }
-        // ********** End XML related methods **********
-
-
-
-        // ********** Database related methods **********
-
-        public Dictionary<string, User> GetUserListFromDatabase()
-        {
-            var users = new Dictionary<string, User>();
-
-            string sqlQuery = "SELECT * FROM [User] ORDER BY Username ASC";
-            string connectionString = DatabaseService.GetConnectionString(); //"Data Source=.\\MSSQLSERVER01;Initial Catalog=MenuShell;Integrated Security=true";
-            using (var connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    var sqlCommand = new SqlCommand(sqlQuery, connection);
-                    var dataReader = sqlCommand.ExecuteReader();
-
-                    while (dataReader.Read())
-                    {
-                        var username = dataReader["Username"].ToString();
-                        var password = dataReader["Password"].ToString();
-                        var role = dataReader["Role"].ToString();
-                        Enum.TryParse(role, true, out Role userRole);
-                        users.Add(username, new User(username, password, userRole));
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
-            return users;
-        }
-
-
-        public Dictionary<string, User> GetUsersFromDBStartingWithString(string searchString)
-        {
-            var resultList = new Dictionary<string, User>();
-            string sqlQuery = $"SELECT * FROM [User] WHERE Username LIKE '{searchString}%' ORDER BY Username ASC";
-            string connectionString = DatabaseService.GetConnectionString();
-            using (var connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    var sqlCommand = new SqlCommand(sqlQuery, connection);
-                    var dataReader = sqlCommand.ExecuteReader();
-
-                    while (dataReader.Read())
-                    {
-                        var username = dataReader["Username"].ToString();
-                        var password = dataReader["Password"].ToString();
-                        var role = dataReader["Role"].ToString();
-                        Enum.TryParse(role, true, out Role userRole);
-                        resultList.Add(username, new User(username, password, userRole));
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
-            return resultList;
-        }
-
-
-        public void AddUserToDatabase(User user)
-        {
-            string sqlQuery = $"INSERT INTO [User] (Username, Password, Role) " +
-                $"VALUES('{user.Username}', '{user.Password}', '{user.UserRole}')";
-            string connectionString = DatabaseService.GetConnectionString();
-            using (var connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    var sqlCommand = new SqlCommand(sqlQuery, connection);
-                    sqlCommand.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                return context.Users.OrderBy(x => x.Username).ToList();
             }
         }
 
 
-        public void DeleteUserFromDataBase(string username)
+        public static void PrintUserList(IList<User> userList)
         {
-            string sqlQuery = String.Format($"DELETE FROM [User] WHERE Username = '{username}'");
-            string connectionString = DatabaseService.GetConnectionString();
-            using (var connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    var sqlCommand = new SqlCommand(sqlQuery, connection);
-                    sqlCommand.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
-        }
-        // ********** End Database related methods **********
-
-
-
-        // ********** Dictionary related methods **********
-
-        public int PrintUserList(Dictionary<string, User> userList)
-        {
-            var x = 0;
             foreach (var user in userList)
             {
-                x++;
-                Console.WriteLine($"{x}. {user.Value.Username,-15} {user.Value.UserRole,-15}");
+                System.Console.WriteLine($"{user.Username} \t {user.Role}");
             }
-            return x;
         }
 
 
-        public int PrintUserListWithUserNames(Dictionary<string, User> userList)
+        public static void SaveUserToDbUsingEF(User user)
         {
-            var x = 0;
-            foreach (var user in userList)
+            using (var context = new MenuShellDbContext())
             {
-                x++;
-                Console.WriteLine($"- {user.Value.Username,-15}");
+                context.Users.Add(user);
+                context.SaveChanges();
             }
-            return x;
         }
 
 
-        public void AddUserToList(Dictionary<string, User> userList, User user)
+        public static void RemoveUserFromDbUsingEF(string username)
         {
-            userList.Add(user.Username, user);
+            using (var context = new MenuShellDbContext())
+            {
+                var userToBeDeleted = context.Users.Where(x => x.Username == username).FirstOrDefault();
+                context.Users.Remove(userToBeDeleted);
+                context.SaveChanges();
+            }
         }
 
-        public void DeleteUserFromList(Dictionary<string, User> userList, string username)
+
+        public static IList<User> GetUsersStartingWithString(string searchString)
         {
-            userList.Remove(username);
+            var searchList = GetUsersFromDbUsingEF();
+            var matchingUsers = searchList.Where(x => x.Username.ToLower().StartsWith(searchString.ToLower())).ToList();
+            return matchingUsers;
         }
 
 
-        public Dictionary<string, User> GetUsersStartingWithString(string searchString)
+        public static void AddUserToList(IList<User> userList, User user)
         {
-            Dictionary<string, User> searchList = GetUserList();
-            var resultList = searchList.Where(x => x.Key.StartsWith(searchString)).ToDictionary(x => x.Key, x => x.Value);
-
-            return resultList;
+            userList.Add(user);
         }
-        // ********** End Dictionary related methods **********
+
+
+        public static void RemoveUserFromList(IList<User> userList, string username )
+        {
+            userList.Remove(new User() { Username = username });
+        }
+
     }
 }
